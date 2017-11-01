@@ -1,4 +1,6 @@
 ---
+- name: Ensures dir exists
+  file: path=group_vars/all state=directory
 
 - name: Generate P2P IPs
   template: >

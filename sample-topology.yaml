@@ -11,8 +11,9 @@ junos_conf: "config/{{ inventory_hostname }}.conf"
 # Global Variables used to generate the common part of the configuration
 # please update these variable and the template as needed to match your environment
 ################################################################################
+
 global:
-    root_hash: $1$ZUlES4dp$OUwWo1g7cLoV/aMWpHUnC/
+    root_hash: $1$ZUlES4dp$OUwWo1g7cLoV/aMWpHUnC/ #change
     login_message: This is the property of Example Corp. Do not login without express permission.
     time_zone: America/Los_Angeles
     name_servers:
@@ -20,14 +21,6 @@ global:
     - 192.168.60.131
     ntp_servers:
     - 172.17.28.5
-    snmp:
-        location: "Site 1"
-        contact: John Doe
-        polling:
-        - community: public
-    routes:
-      static:
-        172.0.0.0/8: 10.94.194.254
 
 ############################################################################
 ###   Physical interfaces name                                           ###
@@ -90,6 +83,39 @@ topo:
   leaf-04:
     port1: { name: et-0/0/50,    peer: spine-03,     pport: port1,     type: ebgp, link: 14,   linkend: 2 }
     port2: { name: et-0/0/51,    peer: spine-04,     pport: port2,     type: ebgp, link: 16,   linkend: 2 }
+    port3: { name: xe-0/0/12,    peer: access,       pport: unknown }
+    port4: { name: xe-0/0/13,    peer: access,       pport: unknown }
+    port5: { name: et-0/0/53,    peer: access,       pport: unknown }
+
+##########################################################################################################
+
+  saimspine-1:
+    port1: { name: et-0/0/50,    peer: saimleaf-1,     pport: port1,     type: ebgp, link: 1,   linkend: 1 }
+    port2: { name: et-0/0/51,    peer: saimleaf-2,     pport: port1,     type: ebgp, link: 2,   linkend: 1 }
+    port3: { name: et-0/0/51,    peer: saimleaf-3,     pport: port1,     type: ebgp, link: 3,   linkend: 1 }
+
+  saimspine-2:
+    port1: { name: et-0/0/50,    peer: saimleaf-1,     pport: port2,     type: ebgp, link: 1,   linkend: 1 }
+    port2: { name: et-0/0/51,    peer: saimleaf-2,     pport: port2,     type: ebgp, link: 2,   linkend: 1 }
+    port3: { name: et-0/0/51,    peer: saimleaf-3,     pport: port2,     type: ebgp, link: 3,   linkend: 1 }
+
+  saimleaf-1:
+    port1: { name: et-0/0/50,    peer: saimspine-1,     pport: port1,     type: ebgp, link: 1,   linkend: 2 }
+    port2: { name: et-0/0/51,    peer: saimspine-2,     pport: port1,     type: ebgp, link: 4,   linkend: 2 }
+    port3: { name: xe-0/0/12,    peer: access,       pport: unknown }
+    port4: { name: xe-0/0/13,    peer: access,       pport: unknown }
+    port5: { name: et-0/0/53,    peer: access,       pport: unknown }
+
+  saimleaf-2:
+    port1: { name: et-0/0/50,    peer: saimspine-1,     pport: port2,     type: ebgp, link: 2,   linkend: 2 }
+    port2: { name: et-0/0/51,    peer: saimspine-2,     pport: port2,     type: ebgp, link: 5,   linkend: 2 }
+    port3: { name: xe-0/0/12,    peer: access,       pport: unknown }
+    port4: { name: xe-0/0/13,    peer: access,       pport: unknown }
+    port5: { name: et-0/0/53,    peer: access,       pport: unknown }
+
+  saimleaf-3:
+    port1: { name: et-0/0/50,    peer: saimspine-1,     pport: port3,     type: ebgp, link: 3,   linkend: 2 }
+    port2: { name: et-0/0/51,    peer: saimspine-2,     pport: port3,     type: ebgp, link: 6,   linkend: 2 }
     port3: { name: xe-0/0/12,    peer: access,       pport: unknown }
     port4: { name: xe-0/0/13,    peer: access,       pport: unknown }
     port5: { name: et-0/0/53,    peer: access,       pport: unknown }
